@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #FAF8F3;
+  --color-surface: #FFFEFB;
+  --color-surface2: #F4F1EA;
+  --color-text: #1A1714;
+  --color-text2: #6B6560;
+  --color-text3: #A8A29B;
+  --color-accent: #8B4513;
+  --color-accent2: #C4732A;
+  --color-accent-light: #F5E6D8;
+  --color-red: #C0392B;
+  --color-border: #E8E2D9;
+  --color-border2: #D4CCC0;
+  --color-selected-start: #8B4513;
+  --color-in-range: #F5E6D8;
+}
+
+/* --- Base Body Styles --- */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'DM Sans', sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Screen Styles (Sirf screen par dikhega) --- */
+@media screen {
+  .print-root {
+    display: none !important; /* Normal view mein print layout ko chupa do */
+  }
+}
+
+/* --- Print Styles (Sirf print ke waqt trigger hoga) --- */
+@media print {
+  /* Faltu elements (buttons, nav) ko hide karne ke liye */
+  .no-print { 
+    display: none !important; 
+  }
+
+  /* Page setup (Landscape mode) */
+  @page { 
+    size: A4 landscape; 
+    margin: 14mm 12mm; 
+  }
+
+  /* Global Print Reset */
+  html, body {
+    background: #fff !important;
+    color: var(--color-text) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Main Print Grid */
+  .print-root {
+    display: grid !important;
+    grid-template-columns: 1fr 320px !important;
+    gap: 16px !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    align-items: start;
+  }
+
+  /* Left Side: Calendar Card */
+  .print-card-left {
+    border: 1px solid var(--color-border) !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  /* Hero Image Section */
+  .print-hero {
+    height: 130px !important;
+    background-size: cover !important;
+    background-position: center !important;
+    position: relative;
+  }
+
+  .print-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 60%);
+  }
+
+  .print-hero-text {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    color: #fff;
+  }
+
+  .print-hero-text h2 {
+    font-size: 38px !important;
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .print-hero-text p {
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-top: 3px;
+  }
+
+  /* Calendar Grid Logic */
+  .print-cal-body {
+    padding: 16px 20px 20px !important;
+  }
+
+  .print-day-headers {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    text-align: center;
+    font-size: 9px !important;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text2) !important;
+    margin-bottom: 6px;
+  }
+
+  .print-day-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    gap: 2px !important;
+  }
+
+  .print-day-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 44px !important;
+    width: 100% !important;
+    font-size: 13px !important;
+    font-weight: 600;
+    color: var(--color-text) !important;
+    border-radius: 50% !important;
+    position: relative;
+  }
+
+  /* State Highlight Styles */
+  .print-day-cell.is-today { 
+    border: 2px solid var(--color-accent) !important; 
+    color: var(--color-accent) !important; 
+  }
+  .print-day-cell.is-selected { 
+    background: var(--color-accent) !important; 
+    color: #fff !important; 
+  }
+  .print-day-cell.in-range { 
+    background: var(--color-in-range) !important; 
+    border-radius: 0 !important; 
+    color: var(--color-accent) !important; 
+  }
+  .print-day-cell.range-start { 
+    background: var(--color-accent) !important; 
+    color: #fff !important; 
+    border-radius: 50% 0 0 50% !important; 
+  }
+  .print-day-cell.range-end { 
+    background: var(--color-accent) !important; 
+    color: #fff !important; 
+    border-radius: 0 50% 50% 0 !important; 
+  }
+
+  /* Event Dots */
+  .print-dots {
+    display: flex;
+    gap: 2px;
+    position: absolute;
+    bottom: 4px;
+  }
+  .print-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+  }
+
+  /* Right Side Column (Agenda & Memos) */
+  .print-right-col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    break-inside: avoid;
+  }
+
+  .print-right-card {
+    border: 1px solid var(--color-border) !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
+    box-shadow: none !important;
+    background: var(--color-surface) !important;
+  }
+
+  .print-section-title {
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--color-text);
+  }
+
+  /* Memo Area with Lined Paper Effect */
+  .print-memo-area {
+    min-height: 130px;
+    font-size: 13px;
+    line-height: 2rem;
+    color: var(--color-text);
+    white-space: pre-wrap;
+    background-image: repeating-linear-gradient(
+      transparent, 
+      transparent calc(2rem - 1px), 
+      var(--color-border) calc(2rem - 1px), 
+      var(--color-border) 2rem
+    );
+    word-break: break-word;
+  }
+
+  .print-footer {
+    text-align: right;
+    font-size: 9px;
+    color: var(--color-text3);
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+}
